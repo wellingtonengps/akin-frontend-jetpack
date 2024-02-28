@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">akin</string>
+    <string name="entrar">Entrar</string>
+    <string name="criar_conta">Criar conta</string>
+    <string name="title_login_page">Entre com sua conta</string>
+    <string name="text_login_page">Faça login na sua conta já existente\npreenchendo os campos abaixo.</string>
+</resources>
