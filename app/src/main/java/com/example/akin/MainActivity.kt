@@ -1,10 +1,8 @@
 package com.example.akin
 
 
-import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
-import android.window.SplashScreen
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -20,7 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -29,12 +26,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,7 +49,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.akin.network.dto.JwtResponseDTO
+import com.example.akin.network.dto.UserRequestDTO
+import com.example.akin.network.repository.UserRepository
 import com.example.akin.ui.theme.AkinTheme
+import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
@@ -60,19 +61,38 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AkinTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = "main") {
-                        composable("main") {
+                    val userRepository = UserRepository()
+                    val scope = rememberCoroutineScope()
+                    var responseTokens: JwtResponseDTO? = null
+
+                    NavHost(navController = navController, startDestination = "main/{UserInfo}") {
+                        composable("main/{UserInfo}") { backStackEntry ->
+                            backStackEntry.arguments?.let { tokens ->
+                                Main(navController = navController, responseToken = tokens)
+                            } ?: LaunchedEffect(null) {
+                                navController.navigate("signIn")
+                            }
+
+                        }
+                        composable("firstPage") {
                             FirstPage(navController)
                         }
                         composable("signIn") {
-                            SignIn(handleClick = {
-                                Log.i("MainActivity", "onCreate: $it")
+                            SignIn(navController, onSignIn = {
+                                scope.launch {
+                                    responseTokens = userRepository.signIn(it)
+                                    navController.navigate(
+                                        "main/{${
+                                            responseTokens
+                                        }}"
+                                    )
+                                    Log.i("JwtResponse", "onCreate: $responseTokens")
+                                }
                             })
                         }
                         composable("signUp") {
@@ -130,10 +150,8 @@ fun FirstPage(navController: NavHostController) {
     }
 }
 
-
-
 @Composable
-fun SignIn(handleClick: (User) -> Unit) {
+fun SignIn(navController: NavHostController, onSignIn: (UserRequestDTO) -> Unit) {
 
     var username by remember {
         mutableStateOf("")
@@ -201,8 +219,8 @@ fun SignIn(handleClick: (User) -> Unit) {
 
         Button(
             onClick = {
-                handleClick(
-                    User(username, password)
+                onSignIn(
+                    UserRequestDTO(username, password)
                 )
             },
             modifier = Modifier.size(154.dp, 54.dp),
@@ -218,6 +236,7 @@ fun SignIn(handleClick: (User) -> Unit) {
     }
 }
 
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun SignUp() {
@@ -227,6 +246,18 @@ fun SignUp() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "signUp")
+    }
+}
+
+@Composable
+fun Main(navController: NavHostController, responseToken: Bundle) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "accessToken: ${responseToken.getString("accessToken")}")
+        Text(text = "refreshToken: ${responseToken.getString("refreshToken")}")
     }
 }
 

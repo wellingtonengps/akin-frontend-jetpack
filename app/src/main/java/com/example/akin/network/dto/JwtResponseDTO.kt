@@ -4,6 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class JwtResponseDTO(
-    private val accessToken: String,
-    private val refreshToken: String
-)
+    val accessToken: String,
+    val refreshToken: String
+){
+
+}
