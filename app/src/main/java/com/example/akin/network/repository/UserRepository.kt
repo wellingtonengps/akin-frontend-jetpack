@@ -13,12 +13,10 @@ import io.ktor.http.parameters
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-class UserRepository() {
+class UserRepository {
 
     suspend fun signIn(user: UserRequestDTO): JwtResponseDTO {
-        //todo: verificar CIO, nova implementação.
         val httpClient = HttpClient(Android) {
-            //nota: chamada install server para instalar coisa no httpClient
             install(Logging) {
                 level = LogLevel.ALL
             }
@@ -30,7 +28,7 @@ class UserRepository() {
         }
 
         val response: JwtResponseDTO = httpClient.submitForm(
-            "http://172.22.128.1:8080/authenticate/login",
+            "http://172.31.224.1:8080/authenticate/login",
             formParameters = parameters {
                 append("username", user.username)
                 append("password", user.password)

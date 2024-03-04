@@ -42,7 +42,8 @@ fun AkinNavHost(
             FirstPage(navController)
         }
         composable(route = SignInDestination.route) {
-            SignIn(navController, onSignIn = {
+            /*
+            * , onSignIn = {
                 scope .launch {
                     responseTokens = userRepository.signIn(it)
                     navController.navigate(
@@ -52,7 +53,9 @@ fun AkinNavHost(
                     )
                     Log.i("JwtResponse", "onCreate: $responseTokens")
                 }
-            })
+            })*/
+
+            SignIn(navController)
         }
         composable(route = SignUpDestination.route) {
             SignUp()

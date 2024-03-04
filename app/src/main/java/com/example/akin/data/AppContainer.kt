@@ -1,6 +1,7 @@
 package com.example.akin.data
 
 import android.content.Context
+import com.example.akin.network.repository.UserRepository
 
 interface AppContainer {
     val usersRepository: UsersRepository

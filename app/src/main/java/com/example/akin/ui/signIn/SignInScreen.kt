@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,19 +32,25 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.akin.R
 import com.example.akin.network.dto.UserRequestDTO
+import com.example.akin.ui.AppViewModelProvider
+import com.example.akin.ui.home.HomeDestination
 import com.example.akin.ui.navigation.NavigationDestination
+import kotlinx.coroutines.launch
 
 
 object SignInDestination : NavigationDestination {
     override val route = "signIn"
+    const val userInfo = ""
+    val routWithArgs = "${route}/{$userInfo}"
 }
 
 
 @Composable
-fun SignIn(navController: NavHostController, onSignIn: (UserRequestDTO) -> Unit) {
+fun SignIn(navController: NavHostController, viewModel: SignInViewModel = viewModel(factory = AppViewModelProvider.Factory)) {
 
     var username by remember {
         mutableStateOf("")
@@ -52,6 +59,9 @@ fun SignIn(navController: NavHostController, onSignIn: (UserRequestDTO) -> Unit)
     var password by remember {
         mutableStateOf("")
     }
+
+
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -111,9 +121,9 @@ fun SignIn(navController: NavHostController, onSignIn: (UserRequestDTO) -> Unit)
 
         Button(
             onClick = {
-                onSignIn(
-                    UserRequestDTO(username, password)
-                )
+                coroutineScope.launch {
+                    viewModel.saveItem()
+                }
             },
             modifier = Modifier.size(154.dp, 54.dp),
             shape = RoundedCornerShape(12.dp),
