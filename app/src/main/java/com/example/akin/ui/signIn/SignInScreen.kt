@@ -36,6 +36,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.akin.R
 import com.example.akin.network.dto.UserRequestDTO
+import com.example.akin.network.repository.UserRepository
 import com.example.akin.ui.AppViewModelProvider
 import com.example.akin.ui.home.HomeDestination
 import com.example.akin.ui.navigation.NavigationDestination

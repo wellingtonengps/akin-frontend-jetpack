@@ -13,16 +13,18 @@ data class User(
     val lastName: String,
     val gender: String,
     val email: String,
-    val password: String,
+    //val password: String,
     val avatar: String,
-    @TypeConverters()
-    val birthDate: Date,
+    //@TypeConverters()
+    //val birthDate: Date,
     val username: String,
+    val accessToken: String,
+    val refreshToken: String,
     val enabled: Boolean = true,
     val accountNonLocked: Boolean = true,
     val accountNonExpired: Boolean = true,
     val credentialsNonExpired: Boolean = true,
-    val role: UserRole = UserRole.ADMIN,
+    //val role: UserRole = UserRole.ADMIN,
 ) {
 
 }

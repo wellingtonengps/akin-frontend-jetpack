@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.akin.data.utils.Converters
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(entities = [User::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AkinDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao

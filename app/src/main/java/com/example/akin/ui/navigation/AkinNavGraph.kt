@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.akin.network.dto.JwtResponseDTO
+import com.example.akin.network.dto.UserResponseDTO
 import com.example.akin.network.repository.UserRepository
 import com.example.akin.ui.firstPage.FirstPage
 import com.example.akin.ui.firstPage.FirstPageDestination
@@ -26,7 +27,7 @@ fun AkinNavHost(
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
-    var responseTokens: JwtResponseDTO? = null
+    var responseTokens: UserResponseDTO
     val userRepository = UserRepository()
 
     NavHost(navController = navController, startDestination = HomeDestination.route) {
@@ -43,7 +44,7 @@ fun AkinNavHost(
         }
         composable(route = SignInDestination.route) {
             /*
-            * , onSignIn = {
+            * onSignIn = {
                 scope .launch {
                     responseTokens = userRepository.signIn(it)
                     navController.navigate(
@@ -53,7 +54,7 @@ fun AkinNavHost(
                     )
                     Log.i("JwtResponse", "onCreate: $responseTokens")
                 }
-            })*/
+            }*/
 
             SignIn(navController)
         }
