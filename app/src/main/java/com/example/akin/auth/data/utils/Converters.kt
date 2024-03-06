@@ -1,4 +1,4 @@
-package com.example.akin.data.utils
+package com.example.akin.auth.data.utils
 
 import androidx.room.TypeConverter
 import java.util.Date

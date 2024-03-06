@@ -1,4 +1,4 @@
-package com.example.akin.network.dto
+package com.example.akin.auth.domain
 
 import kotlinx.serialization.Serializable
 

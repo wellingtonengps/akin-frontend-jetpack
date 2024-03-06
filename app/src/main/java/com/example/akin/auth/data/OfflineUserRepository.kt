@@ -1,8 +1,8 @@
-package com.example.akin.data
+package com.example.akin.auth.data
 
 import kotlinx.coroutines.flow.Flow
 
-class OfflineUsersRepository(private val userDao: UserDao): UsersRepository {
+class OfflineUserRepository(private val userDao: UserDao): UserRepository {
     override fun getAllUsersStream(): Flow<List<User>> = userDao.getAllUsers()
 
     override fun getUserStream(id: Long): Flow<User?> = userDao.getUser(id)

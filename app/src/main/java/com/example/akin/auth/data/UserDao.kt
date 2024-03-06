@@ -1,4 +1,4 @@
-package com.example.akin.data
+package com.example.akin.auth.data
 
 import androidx.room.Dao
 import androidx.room.Delete

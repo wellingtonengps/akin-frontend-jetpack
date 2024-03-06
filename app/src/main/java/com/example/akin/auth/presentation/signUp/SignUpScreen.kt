@@ -1,4 +1,4 @@
-package com.example.akin.ui.signUp
+package com.example.akin.auth.presentation.signUp
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

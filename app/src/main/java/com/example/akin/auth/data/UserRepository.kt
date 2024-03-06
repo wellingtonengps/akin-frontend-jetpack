@@ -1,8 +1,8 @@
-package com.example.akin.data
+package com.example.akin.auth.data
 
 import kotlinx.coroutines.flow.Flow
 
-interface UsersRepository {
+interface UserRepository {
     fun getAllUsersStream(): Flow<List<User>>
 
     fun getUserStream(id: Long): Flow<User?>

@@ -1,4 +1,4 @@
-package com.example.akin.ui.signIn
+package com.example.akin.auth.presentation.signIn
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -18,11 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,35 +30,22 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.akin.R
-import com.example.akin.network.dto.UserRequestDTO
-import com.example.akin.network.repository.UserRepository
 import com.example.akin.ui.AppViewModelProvider
-import com.example.akin.ui.home.HomeDestination
 import com.example.akin.ui.navigation.NavigationDestination
-import kotlinx.coroutines.launch
 
 
 object SignInDestination : NavigationDestination {
     override val route = "signIn"
     const val userInfo = ""
-    val routWithArgs = "${route}/{$userInfo}"
+    val routWithArgs = "$route/{$userInfo}"
 }
 
 
 @Composable
-fun SignIn(navController: NavHostController, viewModel: SignInViewModel = viewModel(factory = AppViewModelProvider.Factory)) {
-
-    var username by remember {
-        mutableStateOf("")
-    }
-
-    var password by remember {
-        mutableStateOf("")
-    }
-
-
-    val coroutineScope = rememberCoroutineScope()
-
+fun SignIn(
+    navController: NavHostController,
+    viewModel: SignInViewModel = viewModel(factory = AppViewModelProvider.Factory)
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -82,7 +64,8 @@ fun SignIn(navController: NavHostController, viewModel: SignInViewModel = viewMo
 
         Spacer(modifier = Modifier.height(41.dp))
 
-        TextField(value = username, onValueChange = { value -> username = value },
+        TextField(value = viewModel.signUiState.credentials.username,
+            onValueChange = { viewModel.updateUiState(viewModel.signUiState.credentials.copy(username = it)) },
             modifier = Modifier
                 .height(56.dp)
                 .width(300.dp),
@@ -100,8 +83,8 @@ fun SignIn(navController: NavHostController, viewModel: SignInViewModel = viewMo
         Spacer(modifier = Modifier.height(20.dp))
 
         TextField(
-            value = password,
-            onValueChange = { value -> password = value },
+            value = viewModel.signUiState.credentials.password,
+            onValueChange = { viewModel.updateUiState(viewModel.signUiState.credentials.copy(password = it)) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier
                 .height(56.dp)
@@ -122,10 +105,9 @@ fun SignIn(navController: NavHostController, viewModel: SignInViewModel = viewMo
 
         Button(
             onClick = {
-                coroutineScope.launch {
-                    viewModel.saveItem()
-                }
+                viewModel.fetchSign()
             },
+            enabled = viewModel.signUiState.isEntryValid,
             modifier = Modifier.size(154.dp, 54.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(

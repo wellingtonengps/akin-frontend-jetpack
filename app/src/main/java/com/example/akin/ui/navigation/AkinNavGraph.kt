@@ -1,6 +1,5 @@
 package com.example.akin.ui.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -8,18 +7,16 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.akin.network.dto.JwtResponseDTO
-import com.example.akin.network.dto.UserResponseDTO
-import com.example.akin.network.repository.UserRepository
+import com.example.akin.auth.domain.UserResponseDTO
+import com.example.akin.auth.data.AuthRepository
 import com.example.akin.ui.firstPage.FirstPage
 import com.example.akin.ui.firstPage.FirstPageDestination
 import com.example.akin.ui.home.HomeDestination
 import com.example.akin.ui.home.Main
-import com.example.akin.ui.signIn.SignIn
-import com.example.akin.ui.signIn.SignInDestination
-import com.example.akin.ui.signUp.SignUp
-import com.example.akin.ui.signUp.SignUpDestination
-import kotlinx.coroutines.launch
+import com.example.akin.auth.presentation.signIn.SignIn
+import com.example.akin.auth.presentation.signIn.SignInDestination
+import com.example.akin.auth.presentation.signUp.SignUp
+import com.example.akin.auth.presentation.signUp.SignUpDestination
 
 @Composable
 fun AkinNavHost(
@@ -28,7 +25,7 @@ fun AkinNavHost(
 ) {
     val scope = rememberCoroutineScope()
     var responseTokens: UserResponseDTO
-    val userRepository = UserRepository()
+    val userRepository = AuthRepository()
 
     NavHost(navController = navController, startDestination = HomeDestination.route) {
         composable(route = HomeDestination.route) { backStackEntry ->
