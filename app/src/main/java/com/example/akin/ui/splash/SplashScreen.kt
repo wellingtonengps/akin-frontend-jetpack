@@ -12,7 +12,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.akin.R
-import com.example.akin.ui.navigation.NavigationDestination
+import com.example.akin.navigation.NavigationDestination
 
 object SplashDestination : NavigationDestination {
     override val route = "splash"

@@ -1,4 +1,4 @@
-package com.example.akin.ui.navigation
+package com.example.akin.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,19 +40,6 @@ fun AkinNavHost(
             FirstPage(navController)
         }
         composable(route = SignInDestination.route) {
-            /*
-            * onSignIn = {
-                scope .launch {
-                    responseTokens = userRepository.signIn(it)
-                    navController.navigate(
-                        "main/{${
-                            responseTokens
-                        }}"
-                    )
-                    Log.i("JwtResponse", "onCreate: $responseTokens")
-                }
-            }*/
-
             SignIn(navController)
         }
         composable(route = SignUpDestination.route) {

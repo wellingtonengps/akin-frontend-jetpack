@@ -1,5 +1,6 @@
 package com.example.akin.auth.presentation.signIn
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,8 +34,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.akin.R
+import com.example.akin.auth.domain.toUser
 import com.example.akin.ui.AppViewModelProvider
-import com.example.akin.ui.navigation.NavigationDestination
+import com.example.akin.ui.home.HomeDestination
+import com.example.akin.navigation.NavigationDestination
 
 
 object SignInDestination : NavigationDestination {
@@ -46,6 +52,17 @@ fun SignIn(
     navController: NavHostController,
     viewModel: SignInViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+
+    val signInUiState by viewModel.signUiState.collectAsState()
+
+    signInUiState.user?.let { Log.i("teste", it.username) }
+
+    LaunchedEffect(signInUiState.user) {
+        if(signInUiState.user != null){
+            navController.navigate(HomeDestination.route)
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -64,8 +81,8 @@ fun SignIn(
 
         Spacer(modifier = Modifier.height(41.dp))
 
-        TextField(value = viewModel.signUiState.credentials.username,
-            onValueChange = { viewModel.updateUiState(viewModel.signUiState.credentials.copy(username = it)) },
+        TextField(value = signInUiState.credentials.username,
+            onValueChange = { viewModel.updateUiState(viewModel.signUiState.value.credentials.copy(username = it)) },
             modifier = Modifier
                 .height(56.dp)
                 .width(300.dp),
@@ -83,8 +100,8 @@ fun SignIn(
         Spacer(modifier = Modifier.height(20.dp))
 
         TextField(
-            value = viewModel.signUiState.credentials.password,
-            onValueChange = { viewModel.updateUiState(viewModel.signUiState.credentials.copy(password = it)) },
+            value = signInUiState.credentials.password,
+            onValueChange = { viewModel.updateUiState(viewModel.signUiState.value.credentials.copy(password = it)) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier
                 .height(56.dp)
@@ -107,7 +124,7 @@ fun SignIn(
             onClick = {
                 viewModel.fetchSign()
             },
-            enabled = viewModel.signUiState.isEntryValid,
+            enabled = signInUiState.isEntryValid,
             modifier = Modifier.size(154.dp, 54.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(

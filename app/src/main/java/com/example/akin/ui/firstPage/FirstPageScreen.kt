@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.akin.R
-import com.example.akin.ui.navigation.NavigationDestination
+import com.example.akin.navigation.NavigationDestination
 
 object FirstPageDestination : NavigationDestination {
     override val route = "firstPage"
