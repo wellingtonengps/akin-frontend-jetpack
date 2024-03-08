@@ -38,7 +38,7 @@ fun AkinNavHost(
             FirstPage(navController)
         }
         navigation(
-            startDestination = SignInDestination.route,
+            startDestination = SignUpDestination.route,
             route = "auth"
         ) {
             composable(route = SignInDestination.route) {
