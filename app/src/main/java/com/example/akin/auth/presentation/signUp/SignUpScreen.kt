@@ -8,7 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.akin.auth.presentation.signIn.SignInViewModel
 import com.example.akin.navigation.NavigationDestination
+import com.example.akin.ui.AppViewModelProvider
 
 
 object SignUpDestination : NavigationDestination {
@@ -16,9 +19,11 @@ object SignUpDestination : NavigationDestination {
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
+
 @Composable
-fun SignUp() {
+fun SignUp(
+    viewModel: SignInViewModel = viewModel(factory = AppViewModelProvider.Factory)
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

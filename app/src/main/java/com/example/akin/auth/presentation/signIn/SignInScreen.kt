@@ -34,7 +34,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.akin.R
-import com.example.akin.auth.domain.toUser
+import com.example.akin.auth.domain.UserViewModel
+import com.example.akin.auth.presentation.components.TextFieldCustom
 import com.example.akin.ui.AppViewModelProvider
 import com.example.akin.ui.home.HomeDestination
 import com.example.akin.navigation.NavigationDestination
@@ -50,15 +51,18 @@ object SignInDestination : NavigationDestination {
 @Composable
 fun SignIn(
     navController: NavHostController,
+    userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory),
     viewModel: SignInViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
 
-    val signInUiState by viewModel.signUiState.collectAsState()
+    val userInfo by userViewModel.userInfo.collectAsState()
 
+    val signInUiState by viewModel.signUiState.collectAsState()
     signInUiState.user?.let { Log.i("teste", it.username) }
 
-    LaunchedEffect(signInUiState.user) {
-        if(signInUiState.user != null){
+
+    LaunchedEffect(userInfo) {
+        if (userInfo != null) {
             navController.navigate(HomeDestination.route)
         }
     }
@@ -81,35 +85,33 @@ fun SignIn(
 
         Spacer(modifier = Modifier.height(41.dp))
 
-        TextField(value = signInUiState.credentials.username,
-            onValueChange = { viewModel.updateUiState(viewModel.signUiState.value.credentials.copy(username = it)) },
-            modifier = Modifier
-                .height(56.dp)
-                .width(300.dp),
-            shape = RoundedCornerShape(12.dp),
-            label = {
-                Text(text = "Usuário")
+        TextFieldCustom(
+            value = signInUiState.credentials.username,
+            onValueChange = {
+                viewModel.updateUiState(
+                    viewModel.signUiState.value.credentials.copy(username = it)
+                )
             },
+            label = "Usuário",
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.AccountCircle,
                     contentDescription = "ícone usuário"
                 )
-            })
+            }
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        TextField(
+        TextFieldCustom(
             value = signInUiState.credentials.password,
-            onValueChange = { viewModel.updateUiState(viewModel.signUiState.value.credentials.copy(password = it)) },
-            visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier
-                .height(56.dp)
-                .width(300.dp),
-            shape = RoundedCornerShape(12.dp),
-            label = {
-                Text(text = "Senha")
+            onValueChange = {
+                viewModel.updateUiState(
+                    viewModel.signUiState.value.credentials.copy(password = it)
+                )
             },
+            visualTransformation = PasswordVisualTransformation(),
+            label = "Senha",
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Lock,

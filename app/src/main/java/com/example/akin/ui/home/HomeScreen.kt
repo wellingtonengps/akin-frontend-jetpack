@@ -19,13 +19,12 @@ object HomeDestination : NavigationDestination {
 }
 
 @Composable
-fun Main(navController: NavHostController, responseToken: Bundle) {
+fun Home(navController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "accessToken: ${responseToken.getString("accessToken")}")
-        Text(text = "refreshToken: ${responseToken.getString("refreshToken")}")
+        Text(text = "home")
     }
 }

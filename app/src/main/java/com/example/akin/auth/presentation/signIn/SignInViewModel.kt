@@ -1,26 +1,32 @@
 package com.example.akin.auth.presentation.signIn
 
 import android.util.Log
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.akin.auth.data.User
 import com.example.akin.auth.data.UserRepository
 import com.example.akin.auth.domain.UserRequestDTO
 import com.example.akin.auth.domain.UserResponseDTO
 import com.example.akin.auth.data.AuthRepository
 import com.example.akin.auth.domain.SignInUserUseCase
+import com.example.akin.auth.domain.UserViewModel
 import com.example.akin.auth.domain.toUser
+import com.example.akin.ui.AppViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
 
 class SignInViewModel(
-    private val signInUserUseCase: SignInUserUseCase
+    private val signInUserUseCase: SignInUserUseCase,
 ) : ViewModel() {
+
+
 
     private val _signUiState = MutableStateFlow(SignInUiState())
     val signUiState: StateFlow<SignInUiState> = _signUiState
@@ -45,7 +51,7 @@ class SignInViewModel(
                 val user =  signInUserUseCase(
                    "username4", "password4"
                 )
-                updateUser(user)
+                user
             } catch (ioe: IOException) {
                 val message = ioe.message
                 _signUiState.value.message = message.toString()
