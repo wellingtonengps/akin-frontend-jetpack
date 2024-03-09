@@ -58,7 +58,6 @@ fun SignIn(
     val userInfo by userViewModel.userInfo.collectAsState()
 
     val signInUiState by viewModel.signUiState.collectAsState()
-    signInUiState.user?.let { Log.i("teste", it.username) }
 
 
     LaunchedEffect(userInfo) {

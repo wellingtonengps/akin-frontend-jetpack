@@ -1,9 +1,14 @@
 package com.example.akin.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -15,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.akin.auth.domain.UserResponseDTO
 import com.example.akin.auth.data.AuthRepository
+import com.example.akin.auth.domain.UserViewModel
 import com.example.akin.ui.firstPage.FirstPage
 import com.example.akin.ui.firstPage.FirstPageDestination
 import com.example.akin.ui.home.HomeDestination
@@ -30,10 +36,20 @@ import com.example.akin.ui.home.Home
 fun AkinNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModel: SignInViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    signViewModel: SignInViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
 
-    NavHost(navController = navController, startDestination = "auth") {
+    val userInfo by userViewModel.userInfo.collectAsState()
+
+
+    var startDestination by remember { mutableStateOf(FirstPageDestination.route) }
+
+    LaunchedEffect(userInfo) {
+       startDestination = if(userInfo != null) HomeDestination.route else startDestination
+    }
+
+    NavHost(navController = navController, startDestination = startDestination) {
         composable(route = FirstPageDestination.route) {
             FirstPage(navController)
         }

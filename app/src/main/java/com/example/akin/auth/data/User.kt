@@ -3,6 +3,7 @@ package com.example.akin.auth.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.example.akin.auth.domain.UserResponseDTO
 import java.util.Date
 
 @Entity(tableName = "user_account")
@@ -28,4 +29,22 @@ data class User(
 ) {
 
 }
+
+fun User.toUserResponseDTO(): UserResponseDTO {
+    return UserResponseDTO(
+        name = this.name,
+        lastName = this.lastName,
+        gender = this.gender,
+        email = this.email,
+        avatar = this.avatar,
+        username = this.username,
+        accessToken = this.accessToken,
+        refreshToken = this.refreshToken,
+        accountNonExpired = this.accountNonExpired,
+        accountNonLocked = this.accountNonLocked,
+        credentialsNonExpired = this.credentialsNonExpired,
+        enabled = this.enabled
+    )
+}
+
 
