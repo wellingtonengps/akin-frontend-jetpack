@@ -19,6 +19,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,8 +46,12 @@ object SignUpDestination : NavigationDestination {
 
 @Composable
 fun SignUp(
-    //viewModel: SignInViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: SignUpViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+
+    val signUpUiState by viewModel.signUpUiState.collectAsState()
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +59,6 @@ fun SignUp(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
 
 
         Image(
@@ -73,43 +78,81 @@ fun SignUp(
 
         Spacer(modifier = Modifier.height(36.dp))
 
-        TextFieldCustom(value = "", onValueChange = {}, label = "Nome")
+        TextFieldCustom(value = signUpUiState.userInfo.name, onValueChange = {
+            viewModel.updateUiState(
+                viewModel.signUpUiState.value.userInfo.copy(
+                    name = it
+                )
+            )
+        }, label = "Nome")
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        TextFieldCustom(value = "", onValueChange = {}, label = "Sobrenome")
+        TextFieldCustom(value = signUpUiState.userInfo.lastName, onValueChange = {
+            viewModel.updateUiState(
+                viewModel.signUpUiState.value.userInfo.copy(
+                    lastName = it
+                )
+            )
+        }, label = "Sobrenome")
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        TextFieldCustom(value = "", onValueChange = {}, label = "Gênero")
+        TextFieldCustom(value = signUpUiState.userInfo.gender, onValueChange = {
+            viewModel.updateUiState(
+                viewModel.signUpUiState.value.userInfo.copy(
+                    gender = it
+                )
+            )
+        }, label = "Gênero")
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        TextFieldCustom(value = "", onValueChange = {}, label = "Data de Nascimento")
+        //TextFieldCustom(value = "", onValueChange = {}, label = "Data de Nascimento")
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        TextFieldCustom(value = "", onValueChange = {}, label = "E-mail")
+        TextFieldCustom(value = signUpUiState.userInfo.email, onValueChange = {
+            viewModel.updateUiState(
+                viewModel.signUpUiState.value.userInfo.copy(
+                    email = it
+                )
+            )
+        }, label = "E-mail")
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        TextFieldCustom(value = "", onValueChange = {}, label = "Confirmar e-mail")
+        //TextFieldCustom(value = "", onValueChange = {}, label = "Confirmar e-mail")
+
+        TextFieldCustom(value = signUpUiState.userInfo.username, onValueChange = {
+            viewModel.updateUiState(
+                viewModel.signUpUiState.value.userInfo.copy(
+                    username = it
+                )
+            )
+        }, label = "Apelido")
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        TextFieldCustom(value = "", onValueChange = {}, label = "Senha")
+        TextFieldCustom(value = signUpUiState.userInfo.password, onValueChange = {
+            viewModel.updateUiState(
+                viewModel.signUpUiState.value.userInfo.copy(
+                    password = it
+                )
+            )
+        }, label = "Senha", visualTransformation = PasswordVisualTransformation())
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        TextFieldCustom(value = "", onValueChange = {}, label = "Confirmar senha")
+        //TextFieldCustom(value = "", onValueChange = {}, label = "Confirmar senha")
 
         Spacer(modifier = Modifier.height(63.dp))
 
         Button(
             onClick = {
-
+                viewModel.fetchSignUp()
             },
-            //enabled = signInUiState.isEntryValid,
+            enabled = signUpUiState.isEntryValid,
             modifier = Modifier.size(154.dp, 54.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(

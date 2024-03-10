@@ -7,8 +7,10 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.akin.AkinApplication
 import com.example.akin.auth.data.AuthRepository
 import com.example.akin.auth.domain.SignInUserUseCase
+import com.example.akin.auth.domain.SignUpUseCase
 import com.example.akin.auth.domain.UserViewModel
 import com.example.akin.auth.presentation.signIn.SignInViewModel
+import com.example.akin.auth.presentation.signUp.SignUpViewModel
 
 
 object AppViewModelProvider {
@@ -24,6 +26,14 @@ object AppViewModelProvider {
                     akinApplication().container.userRepository,
                     AuthRepository()
                 ),
+            )
+        }
+        initializer {
+            SignUpViewModel(
+                signUpUseCase = SignUpUseCase(
+                    akinApplication().container.userRepository,
+                    AuthRepository()
+                )
             )
         }
 
