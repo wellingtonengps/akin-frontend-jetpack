@@ -12,16 +12,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
-class UserViewModel(private val userRepository: UserRepository): ViewModel(
+class UserViewModel(private val userRepository: UserRepository) : ViewModel(
 ) {
 
     private val _userInfo = MutableStateFlow<UserResponseDTO?>(null)
     val userInfo: StateFlow<UserResponseDTO?> = _userInfo
 
     init {
-        getUserStream(20)
+        getUserStream(1)
     }
 
+    //todo: precisa verificar se exite usuário no
+    // banco de dados, depois verificar se ele possui token válido
     private fun getUserStream(id: Long) {
         viewModelScope.launch {
             userRepository.getUserStream(id).collect { user ->

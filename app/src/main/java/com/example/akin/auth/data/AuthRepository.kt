@@ -18,6 +18,8 @@ import kotlinx.serialization.json.Json
 
 class AuthRepository {
 
+    private val baseURL : String = "http://172.21.80.1:8080"
+
     private val httpClient = HttpClient(Android) {
         install(Logging) {
             level = LogLevel.ALL
@@ -33,7 +35,7 @@ class AuthRepository {
 
     suspend fun signIn(user: SignInRequestDTO): UserResponseDTO {
         val response: UserResponseDTO = httpClient.post(
-            "http://172.19.96.1:8080/authenticate/login") {
+            "${baseURL}/authenticate/login") {
             contentType(ContentType.Application.Json)
             setBody(user)
         }.body()
@@ -44,7 +46,7 @@ class AuthRepository {
     suspend fun signUp(user: SignUpRequestDTO) : UserResponseDTO {
         val response: UserResponseDTO = httpClient.post(
             //todo: alterar esse endpoint futuramente
-            "http://172.19.96.1:8080/user/create"
+            "${baseURL}/user/create"
         ){
             contentType(ContentType.Application.Json)
             setBody(user)

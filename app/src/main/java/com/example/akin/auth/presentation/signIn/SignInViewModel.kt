@@ -2,6 +2,7 @@ package com.example.akin.auth.presentation.signIn
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.akin.auth.domain.SignInRequestDTO
 import com.example.akin.auth.domain.UserResponseDTO
 import com.example.akin.auth.domain.SignInUserUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,12 +14,10 @@ class SignInViewModel(
     private val signInUserUseCase: SignInUserUseCase,
 ) : ViewModel() {
 
-
-
     private val _signUiState = MutableStateFlow(SignInUiState())
     val signUiState: StateFlow<SignInUiState> = _signUiState
 
-    fun updateUiState(signInCredentials: Credentials) {
+    fun updateUiState(signInCredentials: SignInRequestDTO) {
         _signUiState.value = SignInUiState(
             credentials = signInCredentials,
             isEntryValid = validateInput(signInCredentials),
@@ -36,9 +35,8 @@ class SignInViewModel(
         viewModelScope.launch {
             try {
                 val user =  signInUserUseCase(
-                   "username4", "password4"
+                   credentials = signUiState.value.credentials
                 )
-                user
             } catch (ioe: IOException) {
                 val message = ioe.message
                 _signUiState.value.message = message.toString()
@@ -46,7 +44,7 @@ class SignInViewModel(
         }
     }
 
-    private fun validateInput(uiState: Credentials = signUiState.value.credentials): Boolean {
+    private fun validateInput(uiState: SignInRequestDTO = signUiState.value.credentials): Boolean {
         return with(uiState) {
             username.isNotBlank() && password.isNotBlank()
         }
@@ -55,13 +53,14 @@ class SignInViewModel(
 
 data class SignInUiState(
     val user: UserResponseDTO? = null,
-    val credentials: Credentials = Credentials(),
+    val credentials: SignInRequestDTO = SignInRequestDTO("", ""),
     val isEntryValid: Boolean = true,
     var message: String = ""
 )
 
+/*
 data class Credentials(
     val username: String = "",
     val password: String = "",
-)
+)*/
 

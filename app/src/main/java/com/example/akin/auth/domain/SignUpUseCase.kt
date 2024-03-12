@@ -8,7 +8,6 @@ class SignUpUseCase(
     private val authRepository: AuthRepository
 ) {
     suspend operator fun invoke(user: SignUpRequestDTO): UserResponseDTO {
-
         val user: UserResponseDTO = authRepository.signUp(user)
         userRepository.insertUser(user.toUser())
 

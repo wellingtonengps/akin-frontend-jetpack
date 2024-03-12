@@ -7,7 +7,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
@@ -19,37 +18,29 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.akin.auth.domain.UserResponseDTO
-import com.example.akin.auth.data.AuthRepository
 import com.example.akin.auth.domain.UserViewModel
 import com.example.akin.ui.firstPage.FirstPage
 import com.example.akin.ui.firstPage.FirstPageDestination
-import com.example.akin.ui.home.HomeDestination
+import com.example.akin.home.presentation.HomeDestination
 import com.example.akin.auth.presentation.signIn.SignIn
 import com.example.akin.auth.presentation.signIn.SignInDestination
 import com.example.akin.auth.presentation.signIn.SignInViewModel
 import com.example.akin.auth.presentation.signUp.SignUp
 import com.example.akin.auth.presentation.signUp.SignUpDestination
 import com.example.akin.ui.AppViewModelProvider
-import com.example.akin.ui.home.Home
+import com.example.akin.home.presentation.Home
 
 @Composable
 fun AkinNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     signViewModel: SignInViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    isLoggedIn: Boolean,
 ) {
 
-    val userInfo by userViewModel.userInfo.collectAsState()
 
-
-    var startDestination by remember { mutableStateOf(FirstPageDestination.route) }
-
-    LaunchedEffect(userInfo) {
-       startDestination = if(userInfo != null) HomeDestination.route else startDestination
-    }
-
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(navController = navController, startDestination = FirstPageDestination.route) {
         composable(route = FirstPageDestination.route) {
             FirstPage(navController)
         }
@@ -65,11 +56,13 @@ fun AkinNavHost(
             }
         }
         composable(route = HomeDestination.route) {
-            Home(navController)
+
+            Home(navController = navController)
         }
     }
 }
 
+//todo: verificar como usar depois
 @Composable
 inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(navController: NavController): T {
     val navGraphRoute = destination.parent?.route ?: return viewModel()

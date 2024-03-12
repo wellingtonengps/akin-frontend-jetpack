@@ -1,6 +1,5 @@
 package com.example.akin.auth.presentation.signIn
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -17,7 +15,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -37,7 +34,7 @@ import com.example.akin.R
 import com.example.akin.auth.domain.UserViewModel
 import com.example.akin.auth.presentation.components.TextFieldCustom
 import com.example.akin.ui.AppViewModelProvider
-import com.example.akin.ui.home.HomeDestination
+import com.example.akin.home.presentation.HomeDestination
 import com.example.akin.navigation.NavigationDestination
 
 
@@ -51,20 +48,10 @@ object SignInDestination : NavigationDestination {
 @Composable
 fun SignIn(
     navController: NavHostController,
-    userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    //userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory),
     viewModel: SignInViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-
-    val userInfo by userViewModel.userInfo.collectAsState()
-
     val signInUiState by viewModel.signUiState.collectAsState()
-
-
-    LaunchedEffect(userInfo) {
-        if (userInfo != null) {
-            navController.navigate(HomeDestination.route)
-        }
-    }
 
     Column(
         modifier = Modifier.fillMaxSize(),

@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.akin.auth.domain.SignUpRequestDTO
 import com.example.akin.auth.domain.SignUpUseCase
 import com.example.akin.auth.domain.UserResponseDTO
-import com.example.akin.auth.presentation.signIn.Credentials
 import com.example.akin.auth.presentation.signIn.SignInUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -48,7 +47,7 @@ class SignUpViewModel(
 
 data class SignUpUiState(
     val userInfo: SignUpRequestDTO = SignUpRequestDTO("", "", "", "", "", "", ""),
-    val isEntryValid: Boolean = true,
+    val isEntryValid: Boolean = false,
     var message: String = ""
 )
 

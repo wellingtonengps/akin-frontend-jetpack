@@ -5,14 +5,10 @@ import com.example.akin.auth.data.UserRepository
 
 class SignInUserUseCase(
     private val userRepository: UserRepository,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
 ) {
-    suspend operator fun invoke(username: String, password: String): UserResponseDTO {
-        val user: UserResponseDTO = authRepository.signIn(
-            SignInRequestDTO(
-                username, password
-            )
-        )
+    suspend operator fun invoke(credentials: SignInRequestDTO): UserResponseDTO {
+        val user: UserResponseDTO = authRepository.signIn(credentials)
         userRepository.insertUser(user.toUser())
 
         return user;

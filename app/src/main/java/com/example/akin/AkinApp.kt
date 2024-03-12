@@ -8,5 +8,5 @@ import com.example.akin.navigation.AkinNavHost
 
 @Composable
 fun AkinApp(navController: NavHostController = rememberNavController()) {
-    AkinNavHost(navController = navController)
+    AkinNavHost(navController = navController, isLoggedIn = true)
 }
