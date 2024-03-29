@@ -3,7 +3,7 @@ package com.example.akin.auth.domain
 import com.example.akin.auth.data.AuthRepository
 import com.example.akin.auth.data.UserRepository
 
-class SignInUserUseCase(
+class SignInUseCase(
     private val userRepository: UserRepository,
     private val authRepository: AuthRepository,
 ) {

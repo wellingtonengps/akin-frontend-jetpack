@@ -27,7 +27,7 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel(
         getUserStream(1)
     }
 
-    fun getUserStream(id: Long) {
+    fun getUserStream(id: Long = 1) {
         viewModelScope.launch {
             userRepository.getUserStream(id).collect { user ->
                 _userInfo.value = user?.toUserResponseDTO()

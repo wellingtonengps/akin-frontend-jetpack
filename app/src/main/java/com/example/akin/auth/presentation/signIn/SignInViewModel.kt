@@ -4,14 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.akin.auth.domain.SignInRequestDTO
 import com.example.akin.auth.domain.UserResponseDTO
-import com.example.akin.auth.domain.SignInUserUseCase
+import com.example.akin.auth.domain.SignInUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
 
 class SignInViewModel(
-    private val signInUserUseCase: SignInUserUseCase,
+    private val signInUserUseCase: SignInUseCase,
 ) : ViewModel() {
 
     private val _signUiState = MutableStateFlow(SignInUiState())
