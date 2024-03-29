@@ -60,15 +60,15 @@ fun SignUp(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+        Spacer(modifier = Modifier.height(16.dp))
 
         Image(
             painter = painterResource(id = R.drawable.logo_image),
             contentDescription = "logo",
+            modifier = Modifier.size(100.dp)
         )
 
         Text(text = "Crie sua conta", fontSize = 32.sp)
-
-        Spacer(modifier = Modifier.height(12.dp))
 
         Text(
             text = "Faça sua conta preenchendo\nos campos abaixo",
@@ -109,8 +109,6 @@ fun SignUp(
         Spacer(modifier = Modifier.height(18.dp))
 
         //TextFieldCustom(value = "", onValueChange = {}, label = "Data de Nascimento")
-
-        Spacer(modifier = Modifier.height(18.dp))
 
         TextFieldCustom(value = signUpUiState.userInfo.email, onValueChange = {
             viewModel.updateUiState(

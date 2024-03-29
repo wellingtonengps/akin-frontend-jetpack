@@ -1,6 +1,7 @@
 package com.example.akin.auth.domain
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.akin.auth.data.User
@@ -18,18 +19,20 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel(
     private val _userInfo = MutableStateFlow<UserResponseDTO?>(null)
     val userInfo: StateFlow<UserResponseDTO?> = _userInfo
 
+    private val _isLoggedIn = MutableStateFlow(false)
+    val isLoggedIn: StateFlow<Boolean> = _isLoggedIn
+
+
     init {
         getUserStream(1)
     }
 
-    //todo: precisa verificar se exite usuário no
-    // banco de dados, depois verificar se ele possui token válido
-    private fun getUserStream(id: Long) {
+    fun getUserStream(id: Long) {
         viewModelScope.launch {
             userRepository.getUserStream(id).collect { user ->
                 _userInfo.value = user?.toUserResponseDTO()
+                _isLoggedIn.value = user != null
             }
         }
     }
-
 }

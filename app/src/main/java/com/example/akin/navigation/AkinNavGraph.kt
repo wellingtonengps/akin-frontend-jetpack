@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -36,38 +38,69 @@ fun AkinNavHost(
     modifier: Modifier = Modifier,
     signViewModel: SignInViewModel = viewModel(factory = AppViewModelProvider.Factory),
     userViewModel: UserViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    isLoggedIn: Boolean,
 ) {
 
+    LaunchedEffect(key1 = userViewModel.isLoggedIn) {
+        userViewModel.getUserStream(1)
+    }
 
-    NavHost(navController = navController, startDestination = FirstPageDestination.route) {
-        composable(route = FirstPageDestination.route) {
-            FirstPage(navController)
-        }
-        navigation(
-            startDestination = SignUpDestination.route,
-            route = "auth"
-        ) {
-            composable(route = SignInDestination.route) {
-                SignIn(navController)
-            }
-            composable(route = SignUpDestination.route) {
-                SignUp()
-            }
-        }
-        composable(route = HomeDestination.route) {
+    val isLoggedIn by userViewModel.isLoggedIn.collectAsState()
 
-            Home(navController = navController)
+    val startRoute = if(isLoggedIn) "home_graph" else
+        "auth_graph"
+
+    NavHost(navController = navController, startDestination = startRoute){
+
+
+        auth(navController)
+        home(navController)
+
+        /*
+        if (isLoggedIn) {
+            navController.navigate("home_graph")
+        } else {
+            navController.navigate("auth_graph")
+        }*/
+    }
+}
+
+fun NavGraphBuilder.auth(navController: NavHostController){
+    navigation(startDestination = SignInDestination.route, route = "auth_graph") {
+        composable(route = SignInDestination.route) {
+            SignIn(navController)
+        }
+
+        composable(route = SignUpDestination.route){
+            SignUp()
         }
     }
 }
 
-//todo: verificar como usar depois
-@Composable
-inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(navController: NavController): T {
-    val navGraphRoute = destination.parent?.route ?: return viewModel()
-    val parentEntry = remember(this) {
-        navController.getBackStackEntry(navGraphRoute)
+fun NavGraphBuilder.home(navController: NavHostController){
+    navigation(startDestination = HomeDestination.route, route = "home_graph") {
+        composable(HomeDestination.route) {
+          Home(navController = navController)
+        }
+        /*
+        composable(Destinations.SCREEN_ONE.name) {
+            ScreenOne {
+                navController.navigateUp()
+            }
+        }
+        composable(Destinations.SCREEN_TWO.name) {
+            ScreenTwo {
+                navController.navigateUp()
+            }
+        }*/
     }
-    return viewModel(parentEntry)
+}
+
+fun NavController.navigateToSingleTop(route: String) {
+    navigate(route) {
+        popUpTo(graph.findStartDestination().id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 }

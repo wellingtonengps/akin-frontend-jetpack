@@ -11,6 +11,8 @@ class SignUpUseCase(
         val user: UserResponseDTO = authRepository.signUp(user)
         userRepository.insertUser(user.toUser())
 
+
+
         return user;
     }
 }

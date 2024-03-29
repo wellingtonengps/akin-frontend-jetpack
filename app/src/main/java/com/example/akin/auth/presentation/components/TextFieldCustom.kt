@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,16 +44,20 @@ fun TextFieldCustom(
     modifier: Modifier = Modifier,
     label: String,
     leadingIcon: @Composable (() -> Unit)? = null,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
+
     TextField(
         value = value,
         onValueChange = onValueChange,
         colors = TextFieldDefaults.colors(
+            focusedContainerColor = Color(0xFFD8D8D8),
+            unfocusedContainerColor = Color(0xFFD8D8D8),
             focusedTextColor = Color.Black,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-            cursorColor = Color.Black
+            cursorColor = Color.Black,
+
         ),
         modifier = Modifier
             .height(56.dp)
@@ -69,5 +74,5 @@ fun TextFieldCustom(
 @Preview()
 @Composable
 fun TextFieldCustomPreview() {
-    TextFieldCustom(value = "", onValueChange = {}, label = "")
+    TextFieldCustom(value = "", onValueChange = {}, label = "Text")
 }

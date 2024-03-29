@@ -33,6 +33,10 @@ object AppViewModelProvider {
                 signUpUseCase = SignUpUseCase(
                     akinApplication().container.userRepository,
                     AuthRepository()
+                ),
+                signInUseCase = SignInUserUseCase(
+                    akinApplication().container.userRepository,
+                    AuthRepository()
                 )
             )
         }
