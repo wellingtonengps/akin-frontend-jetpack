@@ -55,7 +55,6 @@ object SignInDestination : NavigationDestination {
     val routWithArgs = "$route/{$userInfo}"
 }
 
-
 @Composable
 fun SignIn(
     navController: NavHostController,

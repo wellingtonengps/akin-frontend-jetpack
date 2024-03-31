@@ -18,7 +18,7 @@ import kotlinx.serialization.json.Json
 
 class AuthRepository {
 
-    private val baseURL : String = "http://172.26.224.1:8080"
+    private val baseURL : String = "http://172.26.176.1:8080"
 
     private val httpClient = HttpClient(Android) {
         install(Logging) {

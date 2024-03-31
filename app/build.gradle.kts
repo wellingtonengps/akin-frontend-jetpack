@@ -54,7 +54,9 @@ android {
 dependencies {
     val navVersion = "2.7.7"
     val ktorVersion = "2.3.8"
+    val accompanistVersion = "0.33.0-alpha"
 
+    implementation("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
     //Room
     implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
